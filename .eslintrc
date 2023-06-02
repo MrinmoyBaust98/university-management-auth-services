@@ -16,6 +16,9 @@
     "no-unreachable":"error",
     "@typescript-eslint/consistent-type-definitions": ["error", "type"]
   },
+  "globals": {
+    "process":"readonly"
+  },
 
   "env": {
     "browser": true,
