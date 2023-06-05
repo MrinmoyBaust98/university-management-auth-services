@@ -1,6 +1,7 @@
-import express, { Application, Request, Response } from 'express'
+import express, { Application } from 'express'
 import cors from 'cors'
-import userRouter from './app/modules/users/users.route'
+import { UserRoutes } from './app/modules/users/user.route'
+import globalErrorHandler from './app/middlewares/globalErrorHandler'
 
 const app: Application = express()
 
@@ -12,11 +13,15 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // Application Routes
-app.use('/api/v1/users', userRouter)
+app.use('/api/v1/users', UserRoutes)
 
-// Testing Route..Will remove leter
-app.get('/', (req: Request, res: Response) => {
-  res.send(' Working SuccessFully')
-})
+// //Testing
+// app.get('/', (req: Request, res: Response, next: NextFunction) => {
+//   throw new ApiError(400, 'Ore Baba Error ')
+//   // next('Ore Baba Error') // Error
+// })
+
+// global error handler
+app.use(globalErrorHandler)
 
 export default app
