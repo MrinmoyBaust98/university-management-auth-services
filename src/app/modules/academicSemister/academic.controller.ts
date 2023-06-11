@@ -18,6 +18,7 @@ const createSemister = catchAsync(
       data: result,
     });
 
+    // next();
     next();
   }
 );
