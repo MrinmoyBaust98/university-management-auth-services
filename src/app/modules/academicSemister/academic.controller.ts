@@ -1,27 +1,26 @@
-import { RequestHandler } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { AcademicSemisterService } from './academicSemister.service';
+import catchAsync from '../../../shared/catchAsync';
+import sendResponse from '../../../shared/sendResponse';
+import httpStatus from 'http-status';
 
-const createSemister: RequestHandler = async (req, res, next) => {
-  try {
+const createSemister = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const { ...academicSemisterData } = req.body;
     const result = await AcademicSemisterService.createSemister(
       academicSemisterData
     );
-    res.status(200).json({
+
+    next();
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
       message: 'Academic Semister  Created Successfully',
       data: result,
     });
-  } catch (error) {
-    next(error);
-
-    // res.status(400).json({
-    //   // success: false,
-    //   // message: 'Feild to createuser',
-    //   error: error,
-    // })
   }
-};
+);
 
 export const AcademicSemisterController = {
   createSemister,

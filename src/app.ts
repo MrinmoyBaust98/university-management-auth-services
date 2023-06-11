@@ -1,8 +1,7 @@
 import express, { Application } from 'express';
 import cors from 'cors';
-import { UserRoutes } from './app/modules/users/user.route';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
-import { AcademicSemisterRoutes } from './app/modules/academicSemister/academicSemister.route';
+import routers from './app/routes';
 
 const app: Application = express();
 
@@ -14,8 +13,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Application Routes
-app.use('/api/v1/users', UserRoutes);
-app.use('/api/v1/academic-semister', AcademicSemisterRoutes);
+app.use('/api/v1', routers);
+// app.use('/api/v1/users', UserRoutes);
+// app.use('/api/v1/academic-semister', AcademicSemisterRoutes);
 
 // //Testing
 // app.get('/', (req: Request, res: Response, next: NextFunction) => {
