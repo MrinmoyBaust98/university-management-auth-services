@@ -11,14 +11,14 @@ const createSemister = catchAsync(
       academicSemisterData
     );
 
-    next();
-
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
       message: 'Academic Semister  Created Successfully',
       data: result,
     });
+
+    next();
   }
 );
 
