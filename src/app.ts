@@ -1,7 +1,8 @@
-import express, { Application } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import routers from './app/routes';
+import httpStatus from 'http-status';
 
 const app: Application = express();
 
@@ -14,16 +15,23 @@ app.use(express.urlencoded({ extended: true }));
 
 // Application Routes
 app.use('/api/v1', routers);
-// app.use('/api/v1/users', UserRoutes);
-// app.use('/api/v1/academic-semister', AcademicSemisterRoutes);
-
-// //Testing
-// app.get('/', (req: Request, res: Response, next: NextFunction) => {
-//   throw new ApiError(400, 'Ore Baba Error ')
-//   // next('Ore Baba Error') // Error
-// })
 
 // global error handler
 app.use(globalErrorHandler);
+
+// Not Found handle
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: 'NOT FOUND',
+    errorMessages: [
+      {
+        path: '',
+        message: 'API ROUTE NOT FPUND',
+      },
+    ],
+  });
+  next();
+});
 
 export default app;
