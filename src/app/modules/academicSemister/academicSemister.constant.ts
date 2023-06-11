@@ -26,3 +26,9 @@ export const academicSemisterMonth: IAcademicSemisterMonth[] = [
   'November',
   'December',
 ];
+
+export const academicSemisterTitleCodeMapper: { [key: string]: string } = {
+  Autumn: '01',
+  Summer: '02',
+  Fall: '03',
+};
