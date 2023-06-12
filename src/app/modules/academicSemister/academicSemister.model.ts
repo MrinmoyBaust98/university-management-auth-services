@@ -17,7 +17,7 @@ import status from 'http-status';
 const academicSemisterSchema = new Schema<IAcademicSemister>(
   {
     title: { type: String, required: true, enum: academicSemisterTitle },
-    year: { type: Number, required: true },
+    year: { type: String, required: true },
     code: { type: String, required: true, enum: academicSemisterCode },
     startMonth: {
       type: String,
