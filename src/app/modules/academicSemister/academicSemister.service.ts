@@ -83,4 +83,47 @@ const getAllSemisters = async (
   };
 };
 
-export const AcademicSemisterService = { createSemister, getAllSemisters };
+// single semister Service
+const getSingleSemister = async (
+  id: string
+): Promise<IAcademicSemister | null> => {
+  const result = await AcademicSemister.findById(id);
+  return result;
+};
+
+// update Semister Service
+const updateSemister = async (
+  id: string,
+  payload: Partial<IAcademicSemister>
+): Promise<IAcademicSemister | null> => {
+  //Title and Code mapper cheek
+  if (
+    payload.title &&
+    payload.code &&
+    academicSemisterTitleCodeMapper[payload.title] !== payload.code
+  ) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid Semister Code');
+  }
+
+  // after cheeking start update here
+  const result = await AcademicSemister.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
+
+// Delete Semister Service
+const deleteSemister = async (
+  id: string
+): Promise<IAcademicSemister | null> => {
+  const result = await AcademicSemister.findOneAndDelete({ _id: id });
+  return result;
+};
+
+export const AcademicSemisterService = {
+  createSemister,
+  getAllSemisters,
+  getSingleSemister,
+  updateSemister,
+  deleteSemister,
+};
