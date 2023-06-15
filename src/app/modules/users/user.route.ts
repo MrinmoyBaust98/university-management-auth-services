@@ -5,10 +5,15 @@ import { UserValidation } from './user.validation';
 
 const router = express.Router();
 
+//create Student
 router.post(
-  '/create-user',
+  '/create-student',
   validateRequest(UserValidation.createUserZodSchema),
-  UserController.createUser
+  UserController.createStudent
 );
+
+// create Faculty
+
+//Create Admin
 
 export const UserRoutes = router;
