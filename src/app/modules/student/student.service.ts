@@ -9,6 +9,7 @@ import { IStudent, IStudentFilters } from './student.interface';
 import { Student } from './student.model';
 import ApiError from '../../../error/ApiError';
 
+//Get all students
 const getAllStudents = async (
   filters: IStudentFilters,
   paginationOptions: IPaginationOptions
@@ -66,6 +67,7 @@ const getAllStudents = async (
   };
 };
 
+// Single Students
 const getSingleStudent = async (id: string): Promise<IStudent | null> => {
   const result = await Student.findOne({ id })
     .populate('academicSemester')
@@ -74,6 +76,7 @@ const getSingleStudent = async (id: string): Promise<IStudent | null> => {
   return result;
 };
 
+//Update Students
 const updateStudent = async (
   id: string,
   payload: Partial<IStudent>
@@ -87,15 +90,6 @@ const updateStudent = async (
   const { name, guardian, localGuardian, ...studentData } = payload;
 
   const updatedStudentData: Partial<IStudent> = { ...studentData };
-
-  /* const name ={
-    fisrtName: 'Mezba',  <----- update korar jnno
-    middleName:'Abedin',
-    lastName: 'Forhan'
-  }
-*/
-
-  // dynamically handling
 
   if (name && Object.keys(name).length > 0) {
     Object.keys(name).forEach(key => {
@@ -126,6 +120,7 @@ const updateStudent = async (
   return result;
 };
 
+//Delete Students
 const deleteStudent = async (id: string): Promise<IStudent | null> => {
   const result = await Student.findByIdAndDelete(id)
     .populate('academicSemester')
