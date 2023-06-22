@@ -8,7 +8,7 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: true },
     student: { type: Schema.Types.ObjectId, ref: 'Student' },
     faculty: { type: Schema.Types.ObjectId, reference: 'Faculty' },
-    // admin:{type:Schema.Types.ObjectId,reference:'Admin'}
+    admin: { type: Schema.Types.ObjectId, reference: 'Admin' },
   },
   {
     timestamps: true,
