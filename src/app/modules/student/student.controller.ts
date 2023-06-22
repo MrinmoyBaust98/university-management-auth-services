@@ -8,6 +8,7 @@ import { studentFilterableFields } from './student.constant';
 import { IStudent } from './student.interface';
 import { StudentService } from './student.service';
 
+//get all student
 const getAllStudents = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, studentFilterableFields);
   const paginationOptions = pick(req.query, paginationField);
@@ -26,6 +27,7 @@ const getAllStudents = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+//get single student
 const getSingleStudent = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
 
@@ -39,6 +41,7 @@ const getSingleStudent = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+// update student
 const updateStudent = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
   const updatedData = req.body;
@@ -52,6 +55,8 @@ const updateStudent = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+//Delete Student
 const deleteStudent = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.id;
 
