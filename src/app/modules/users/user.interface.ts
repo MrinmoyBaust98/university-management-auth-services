@@ -9,9 +9,19 @@ export type IUser = {
   id: string;
   role: string;
   password: string;
+  needsPasswordChange: true | false;
   student?: Types.ObjectId | IStudent;
   faculty?: Types.ObjectId | IFaculty;
   admin?: Types.ObjectId | IAdmin;
 };
 
-export type UserModel = Model<IUser, Record<string, unknown>>;
+// Put all user instance methods in this interface:
+export type IUserMethods = {
+  isUserExist(id: string): Promise<Partial<IUser> | null>;
+  isPasswordMatch(
+    givenPassword: string,
+    savePassword: string
+  ): Promise<boolean>;
+};
+
+export type UserModel = Model<IUser, Record<string, unknown>, IUserMethods>;
