@@ -8,7 +8,7 @@ const userSchema = new Schema<IUser, Record<string, never>, IUserMethods>(
   {
     id: { type: String, required: true, unique: true },
     role: { type: String, required: true },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: 0 },
     needsPasswordChange: { type: Boolean, default: true },
     student: { type: Schema.Types.ObjectId, ref: 'Student' },
     faculty: { type: Schema.Types.ObjectId, reference: 'Faculty' },
@@ -30,7 +30,7 @@ userSchema.methods.isUserExist = async function (
 ): Promise<Partial<IUser> | null> {
   return await User.findOne(
     { id },
-    { id: 1, password: 1, needsPasswordChange: 1 }
+    { id: 1, password: 1, role: 1, needsPasswordChange: 1 }
   ).lean();
 };
 
