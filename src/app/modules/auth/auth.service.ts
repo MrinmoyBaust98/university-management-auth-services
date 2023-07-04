@@ -4,11 +4,13 @@ import { User } from '../users/user.model';
 import {
   ILoginUser,
   ILoginUserResponse,
+  IPasswordChange,
   IRefreshTokenResponse,
 } from './auth.interface';
-import { Secret } from 'jsonwebtoken';
+import { JwtPayload, Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import { jwtHelpers } from '../../../helpers/jwthelpers';
+import bcrypt from 'bcrypt';
 
 //login service
 
@@ -100,7 +102,47 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   };
 };
 
+//change password
+
+const changePassword = async (
+  userdata: JwtPayload | null,
+  payload: IPasswordChange
+): Promise<void> => {
+  const { oldPassword, newPassword } = payload;
+
+  // checking User Is really exit or not in DB
+  const user = new User();
+  const isUserExist = await user.isUserExist(userdata?.userID);
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User Not Found ');
+  }
+
+  // Old Password Match
+  if (
+    isUserExist.password &&
+    !user?.isPasswordMatch(oldPassword, isUserExist?.password)
+  ) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Old password is not Vallid');
+  }
+
+  //hash password
+  const newHashPassword = await bcrypt.hash(
+    newPassword,
+    Number(config.bcrypt_salt_rounds)
+  );
+
+  //update Password
+  const updateData = {
+    password: newHashPassword,
+    needsPasswordChange: false,
+    passwordChangeAt: new Date(),
+  };
+
+  await User.findOneAndUpdate({ id: userdata?.userID }, updateData);
+};
+
 export const AuthService = {
   loginUser,
   refreshToken,
+  changePassword,
 };
